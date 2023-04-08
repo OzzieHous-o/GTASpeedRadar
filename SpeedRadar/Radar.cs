@@ -6,6 +6,7 @@ using GTA.Math;
 using System.Drawing;
 using GTA.UI;
 using System.IO;
+using System.Configuration;
 
 
 public class SpeedRadarGTA : Script
@@ -26,13 +27,9 @@ public class SpeedRadarGTA : Script
 
     public SpeedRadarGTA()
     {
-        radarSpeedLimit = 60.0f;
         radarActivated = false;
         lastDetectedVehicle = null;
         radarMarker = Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5.0f;
-
-        speedLimitText = new TextElement("Speed Limit: " + radarSpeedLimit.ToString("F0") + (useMPH ? "MPH" : "KMH"), new Point(10, 50), 0.5f, Color.White, GTA.UI.Font.Pricedown, Alignment.Left);
-        vehicleSpeedText = new TextElement("", new Point(10, 80), 0.5f, Color.White, GTA.UI.Font.Pricedown, Alignment.Left);
 
         string iniFilePath = Path.Combine(Directory.GetCurrentDirectory(), "scripts\\SpeedRadar.ini");
         if (File.Exists(iniFilePath))
@@ -63,8 +60,17 @@ public class SpeedRadarGTA : Script
                 {
                     enableRadarKey = (Keys)Enum.Parse(typeof(Keys), value, true);
                 }
+                else if (key == "DefaultSpeedLimit")
+                {
+                    radarSpeedLimit = float.Parse(value);
+                }
             }
         }
+       
+
+        speedLimitText = new TextElement("Speed Limit: " + radarSpeedLimit.ToString("F0") + (useMPH ? "MPH" : "KMH"), new Point(10, 50), 0.5f, Color.White, GTA.UI.Font.Pricedown, Alignment.Left);
+        vehicleSpeedText = new TextElement("", new Point(10, 80), 0.5f, Color.White, GTA.UI.Font.Pricedown, Alignment.Left);
+
 
         Tick += OnTick;
         KeyUp += OnKeyUp;
