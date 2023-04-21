@@ -6,9 +6,7 @@ using GTA.Math;
 using System.Drawing;
 using GTA.UI;
 using System.IO;
-using System.Configuration;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 
 public class SpeedRadarGTA : Script
